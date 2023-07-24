@@ -9,8 +9,6 @@ export class CreatePostDto {
 
 export class UpdatePostDto {
   @IsNotEmpty()
-  id: string;
-  @IsNotEmpty()
   title: string;
   description: string;
   content: string;

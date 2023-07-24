@@ -20,6 +20,7 @@ export class PostService {
   async createPost(post: CreatePostDto) {
     return await this.postRepository.create(post);
   }
+
   async updatePost(post_id: string, data: UpdatePostDto) {
     return await this.postRepository.findByIdAndUpdate(post_id, data);
   }

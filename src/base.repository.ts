@@ -3,33 +3,45 @@ import { Model, FilterQuery, QueryOptions, Document } from 'mongoose';
 export class BaseRepository<T extends Document> {
   constructor(private readonly model: Model<T>) {}
 
-  // Create single or multiple
-  async create(doc): Promise<any> {
-    console.log(doc);
-    return await this.model.insertMany(doc);
-  }
-
-  async findById(id: string, option?: QueryOptions): Promise<T> {
-    return this.model.findById(id, option);
-  }
-
-  // Find by Condition return only one
-  // async findByCondition(
-  //   filter,
-  //   field?: any | null,
-  //   option?: any | null,
-  //   populate?: any | null,
-  // ) {
-  //   return this.model.findOne(filter, field, option).populate(populate);
-  // }
-
+  // Get posts
   async getByCondition(
     filter,
     field?: any | null,
     option?: any | null,
     populate?: any | null,
   ): Promise<T[]> {
-    return this.model.find(filter, field, option).populate(populate);
+    return await this.model.find(filter, field, option).populate(populate);
+  }
+
+  // Get post by Id
+  async findById(id: string, option?: QueryOptions): Promise<T> {
+    return await this.model.findById(id, option);
+  }
+
+  // Create single post
+  async create(doc): Promise<any> {
+    const createdEntity = new this.model(doc);
+    return await createdEntity.save();
+  }
+
+  // Find by Id and update
+  async findByIdAndUpdate(id, update) {
+    return this.model.findByIdAndUpdate(id, update);
+  }
+
+  // Delete post by Id
+  async deleteOne(id: string) {
+    return this.model.deleteOne({ _id: id } as FilterQuery<T>);
+  }
+
+  // Find by Condition return only one
+  async findByCondition(
+    filter,
+    field?: any | null,
+    option?: any | null,
+    populate?: any | null,
+  ) {
+    return this.model.findOne(filter, field, option).populate(populate);
   }
 
   // async findAll(): Promise<T[]> {
@@ -43,10 +55,6 @@ export class BaseRepository<T extends Document> {
   // async populate(result: T[], option: any) {
   //   return await this.model.populate(result, option);
   // }
-
-  async deleteOne(id: string) {
-    return this.model.deleteOne({ _id: id } as FilterQuery<T>);
-  }
 
   // async deleteMany(id: string[]) {
   //   return this.model.deleteMany({ _id: { $in: id } } as FilterQuery<T>);
@@ -63,8 +71,4 @@ export class BaseRepository<T extends Document> {
   // async updateMany(filter, update, option?: any | null) {
   //   return this.model.updateMany(filter, update, option);
   // }
-
-  async findByIdAndUpdate(id, update) {
-    return this.model.findByIdAndUpdate(id, update);
-  }
 }

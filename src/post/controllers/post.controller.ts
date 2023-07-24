@@ -32,6 +32,7 @@ export class PostController {
       res.json({ message: 'Create new post successfully!' })
     );
   }
+
   @Put(':id')
   async updatePost(
     @Param('id') id: string,
@@ -40,7 +41,7 @@ export class PostController {
   ) {
     return (
       this.postService.updatePost(id, post),
-      res.json({ message: 'Post update successfully!' })
+      res.json({ message: 'Post updated successfully!' })
     );
   }
   @Delete(':id')

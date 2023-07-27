@@ -52,9 +52,9 @@ export class BaseRepository<T extends Document> {
   //   return this.model.aggregate(option);
   // }
 
-  // async populate(result: T[], option: any) {
-  //   return await this.model.populate(result, option);
-  // }
+  async populate(result: T[], option: any) {
+    return await this.model.populate(result, option);
+  }
 
   // async deleteMany(id: string[]) {
   //   return this.model.deleteMany({ _id: { $in: id } } as FilterQuery<T>);
@@ -68,7 +68,7 @@ export class BaseRepository<T extends Document> {
   //   return this.model.findOneAndUpdate(filter as FilterQuery<T>, update);
   // }
 
-  // async updateMany(filter, update, option?: any | null) {
-  //   return this.model.updateMany(filter, update, option);
-  // }
+  async updateMany(filter, update, option?: any | null) {
+    return this.model.updateMany(filter, update, option);
+  }
 }

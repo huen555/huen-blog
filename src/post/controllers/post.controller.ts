@@ -3,16 +3,18 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   Post,
   Put,
+  Query,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { PostService } from '../services/post.service';
 import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
 import { Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('posts')
 export class PostController {
@@ -22,13 +24,28 @@ export class PostController {
     return this.postService.getAllPosts();
   }
   @Get(':id')
-  getPostById(@Param('id') id: string) {
+  async getPostById(@Param('id') id: string) {
     return this.postService.getPostById(id);
   }
+  @Get('get/category')
+  async getByCategory(@Query('category_id') category_id) {
+    return await this.postService.getByCategory(category_id);
+  }
+
+  @Get('get/categories')
+  async getByCategories(@Query('category_ids') category_ids) {
+    return await this.postService.getByCategories(category_ids);
+  }
+
   @Post()
-  async createPost(@Body() post: CreatePostDto, @Res() res: Response) {
+  @UseGuards(AuthGuard('jwt'))
+  async createPost(
+    @Req() req: any,
+    @Body() post: CreatePostDto,
+    @Res() res: Response,
+  ) {
     return (
-      this.postService.createPost(post),
+      this.postService.createPost(req.user, post),
       res.json({ message: 'Create new post successfully!' })
     );
   }

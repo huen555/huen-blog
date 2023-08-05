@@ -64,9 +64,9 @@ export class BaseRepository<T extends Document> {
   //   return this.model.deleteMany(filter);
   // }
 
-  // async findByConditionAndUpdate(filter, update) {
-  //   return this.model.findOneAndUpdate(filter as FilterQuery<T>, update);
-  // }
+  async findByConditionAndUpdate(filter, update) {
+    return this.model.findOneAndUpdate(filter as FilterQuery<T>, update);
+  }
 
   async updateMany(filter, update, option?: any | null) {
     return this.model.updateMany(filter, update, option);

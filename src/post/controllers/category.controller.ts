@@ -16,7 +16,7 @@ export class CategoryController {
     return await this.categoryService.create(createCategoryDto);
   }
 
-  @Get(':id/posts')
+  @Get('posts/:id')
   async getAllPostsOf(@Param('id') category_id) {
     return await this.categoryService.getPosts(category_id);
   }

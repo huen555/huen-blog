@@ -15,3 +15,10 @@ export class UpdatePostDto {
   description: string;
   content: string;
 }
+
+export class PaginationPostDto {
+  @IsNotEmpty()
+  page: number;
+  @IsNotEmpty()
+  limit: number;
+}

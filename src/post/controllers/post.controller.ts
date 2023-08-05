@@ -12,7 +12,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PostService } from '../services/post.service';
-import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
+import {
+  CreatePostDto,
+  PaginationPostDto,
+  UpdatePostDto,
+} from '../dto/post.dto';
 import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -20,21 +24,22 @@ import { AuthGuard } from '@nestjs/passport';
 export class PostController {
   constructor(private readonly postService: PostService) {}
   @Get()
-  getAllPosts() {
-    return this.postService.getAllPosts();
+  getAllPosts(@Query() { page, limit }: PaginationPostDto) {
+    return this.postService.getAllPosts(page, limit);
   }
   @Get(':id')
   async getPostById(@Param('id') id: string) {
     return this.postService.getPostById(id);
   }
+
   @Get('get/category')
   async getByCategory(@Query('category_id') category_id) {
     return await this.postService.getByCategory(category_id);
   }
 
   @Get('get/categories')
-  async getByCategories(@Query('category_ids') category_ids) {
-    return await this.postService.getByCategories(category_ids);
+  async getByCategories(@Query('category_id') category_id) {
+    return await this.postService.getByCategories(category_id);
   }
 
   @Post()
@@ -45,7 +50,7 @@ export class PostController {
     @Res() res: Response,
   ) {
     return (
-      this.postService.createPost(req.user, post),
+      await this.postService.createPost(req.user, post),
       res.json({ message: 'Create new post successfully!' })
     );
   }
@@ -57,14 +62,14 @@ export class PostController {
     @Res() res: Response,
   ) {
     return (
-      this.postService.updatePost(id, post),
+      await this.postService.updatePost(id, post),
       res.json({ message: 'Post updated successfully!' })
     );
   }
   @Delete(':id')
   async deletePost(@Param('id') id: string, @Res() res: Response) {
     return (
-      this.postService.deletePost(id),
+      await this.postService.deletePost(id),
       res.json({ message: 'Post deleted successfully!' })
     );
   }

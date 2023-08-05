@@ -4,7 +4,7 @@ import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
 import { PostRepository } from '../repositories/post.repository';
 import { User } from 'src/user/models/user.model';
 import { CategoryRepository } from '../repositories/category.repository';
-import { UserService } from 'src/user/services/user.service';
+// import { UserService } from 'src/user/services/user.service';
 
 @Injectable()
 export class PostService {
@@ -13,12 +13,18 @@ export class PostService {
     // private readonly userService: UserService,
     private readonly categoryRepository: CategoryRepository,
   ) {}
-  async getAllPosts() {
-    return this.postRepository.getByCondition({});
+  async getAllPosts(page: number, limit: number) {
+    return this.postRepository.getByCondition({}, null, {
+      sort: { _id: 1 },
+      skip: (Number(page) - 1) * Number(limit),
+      limit: Number(limit),
+    });
   }
   async getPostById(post_id: string) {
     const post = this.postRepository.findById(post_id);
     if (post) {
+      // (await post).populate({ path: 'user', select: 'name email' });
+      //   .execPopulate();
       return post;
     } else {
       throw new HttpException('Post not found!', HttpStatus.NOT_FOUND);
@@ -62,10 +68,10 @@ export class PostService {
     });
   }
 
-  async getByCategories(category_ids: [string]) {
+  async getByCategories(category_id: [string]) {
     return await this.postRepository.getByCondition({
       categories: {
-        $all: category_ids,
+        $all: category_id,
       },
     });
   }

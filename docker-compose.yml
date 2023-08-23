@@ -11,3 +11,13 @@ services:
       - '15672:15672'
     env_file:
       - ./rabbitmq.env
+
+  redis:
+    image: redis:6.0.7
+    container_name: redis
+    restart: always
+    volumes:
+      - ./redis/data:/data
+      - ./redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"

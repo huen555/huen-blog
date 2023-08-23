@@ -90,7 +90,7 @@ export class AuthService {
   async logout(user: User) {
     await this.userService.update(
       { email: user.email },
-      { refreshToken: null, accessToken: null },
+      { refreshToken: null },
     );
   }
 }

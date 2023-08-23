@@ -1,5 +1,4 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-
 import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
 import { PostRepository } from '../repositories/post.repository';
 import { User } from 'src/user/models/user.model';
@@ -20,6 +19,7 @@ export class PostService {
       limit: Number(limit),
     });
   }
+
   async getPostById(post_id: string) {
     const post = this.postRepository.findById(post_id);
     if (post) {
@@ -30,6 +30,7 @@ export class PostService {
       throw new HttpException('Post not found!', HttpStatus.NOT_FOUND);
     }
   }
+
   async createPost(user: User, post: CreatePostDto) {
     // post.user = user._id;
     post.user = {

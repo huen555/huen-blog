@@ -14,6 +14,8 @@ export class UpdatePostDto {
   title: string;
   description: string;
   content: string;
+  user: any;
+  categories: [string];
 }
 
 export class PaginationPostDto {

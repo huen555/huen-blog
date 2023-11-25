@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto, LoginUserDto } from '../dto/user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../models/user.model';
+// import { config } from 'rxjs';
 
 @Injectable()
 export class AuthService {

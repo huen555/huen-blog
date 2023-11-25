@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { User } from 'src/user/models/user.model';
-import { Category } from './category.model';
+// import { Category } from './category.model';
 const PostSchema = new mongoose.Schema(
   {
     title: { type: String, require: true },
@@ -13,7 +13,9 @@ const PostSchema = new mongoose.Schema(
       name: String,
       email: String,
     },
-    categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
+    // categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
+    // categories: [{ type: String, ref: 'Category' }],
+    categories: [{ type: String, ref: 'Category' }],
   },
   {
     timestamps: true,
@@ -27,5 +29,6 @@ export interface Post extends mongoose.Document {
   description: string;
   content: string;
   user: User;
-  categories: [Category];
+  // categories: [Category];
+  categories: [string];
 }
